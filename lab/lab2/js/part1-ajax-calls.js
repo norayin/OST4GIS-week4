@@ -1,13 +1,23 @@
 /**
  * Using ajax, download some data from a remote server and log it to the console
  */
+/////////////////////////////////
 
+var data;
 
+var capital = $.ajax("https://raw.githubusercontent.com/CPLN-692-401/datasets/master/json/world-country-capitals.json");
 
+capital.then(function(res) {
+  data = JSON.parse(res);
+  addMarkers(map);
+});
 
-
-
-
+// Function to add markers to map
+var addMarkers = function(map) {
+  for (i = 0; i <data.length; i++){
+    L.marker([data[i].CapitalLatitude, data[i].CapitalLongitude]).bindPopup(data[i].CapitalName).addTo(map);
+  }
+};
 
 var map = L.map('map', {
   center: [39.9522, -75.1639],
@@ -22,4 +32,3 @@ var Stamen_TonerLite = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/ton
 }).addTo(map);
 
 // L.terminator().addTo(map)
-
